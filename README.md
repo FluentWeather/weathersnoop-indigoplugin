@@ -1,6 +1,8 @@
 # Indigo Plugin for WeatherSnoop
 
-This plugin allows you to get data from the WeatherSnoop application into [Indigo](http://www.indigodomo.com). You may create as many “Weather Station” devices as you like - one for each instance of WeatherSnoop that you have (WeatherSnoop 2.x only supports one station at a time, WeatherSnoop can have multiple stations known as agents). WeatherSnoop, with it's ability to connect to local weather station hardware (it supports a wide variety of hardware) and to Weather Underground, is a great way to get weather data into Indigo for use in your home automation logic. You can start with using a local Weather Underground station and add weather hardware later if you want more accurate data.
+This plugin allows you to get data from the WeatherSnoop application into [Indigo](http://www.indigodomo.com). You may create as many “Weather Station” devices as you like - one for each instance of WeatherSnoop that you have (WeatherSnoop 2.x only supports one station at a time, whereas WeatherSnoop 3, 4, and 5 can have multiple stations known as agents).
+
+WeatherSnoop, with it's ability to connect to local weather station hardware (it supports a wide variety of hardware) is a great way to get weather data into Indigo for use in your home automation logic.
 
 Each station will have a variety of device states that hold information that can be used in triggers, conditions, and on control pages.
 
@@ -8,9 +10,9 @@ Each station will have a variety of device states that hold information that can
 
 The plugin's config dialog allows you to turn on extra debugging information in the Event Log. Unless you're trying to debug a problem it's probably best to leave that unchecked.
 
-## WeatherSnoop 5/4/3 Support
+## WeatherSnoop 3/4/5 Support
 
-Each agent exposes only the fields that can be supplied by the particular hardware or source that the agent uses. So, a Davis weather station hardware may have different fields available than another station. The plugin will just pass through the data that the agent supplies unmodified in any way. This will make updates seamless - if the guys at Tee-Boy decide to add fields to an existing agent, they will just automatically show up as a custom state - no need to update the plugin. We think this is a much better approach in the long run.
+Each agent exposes only the fields that can be supplied by the particular hardware or source that the agent uses. So, a Davis weather station hardware may have different fields available than another station. The plugin will just pass through the data that the agent supplies unmodified in any way. This will make updates seamless - if a new property is added to an existing agent, it will just automatically show up as a custom state - no need to update the plugin.
 
 In WeatherSnoop, make sure that you have “Serve my weather data via HTTP on port” checkbox selected in the Preferences.
 
@@ -18,16 +20,16 @@ In WeatherSnoop, make sure that you have “Serve my weather data via HTTP on po
 
 WeatherSnoop has many great features, one of which is Bonjour discovery which makes device creation a snap:
 
-1. Select DEVICES (or one of it's subfolders) from the Outline View
-2. Click on the New… button
-3. In the resulting Create New Device dialog, select WeatherSnoop from the Type: popup
-4. Select WeatherSnoop 3 Agent from the Model: menu
-5. In the resulting Configure WeatherSnoop 3 Agent dialog, you have some options:
- i. First, you must identify the WeatherSnoop instance - the most convenient way is to select it from the Select WeatherSnoop instance popup. This popup shows all WeatherSnoop 3.x instances running on your local network. If you don't see your WeatherSnoop or if it's on a different network, click the Manually enter network address checkbox, enter the host and port and click Scan for Agents.
- ii. Next, the Select WeatherSnoop agent popup list should show all agents that WeatherSnoop has open. If there are none in the list, make sure WeatherSnoop is configured to share data and that it has at least one open agent. You can click Scan for Agents if you made any changes in WeatherSnoop.
- iii. Once you've selected the appropriate agent, select the field you want displayed in the State column of the Device List. Most people will probably select the temperature but you can select whatever you want.
-6. Click Save
-7. Name the timer something useful and close the Create New Device dialog
+1. Select `DEVICES` (or one of it's subfolders) from the Outline View
+2. Click on the `New…` button
+3. In the resulting `Create New Device` dialog, select `WeatherSnoop` from the `Type:` popup
+4. Select `WeatherSnoop 3+ Agent` from the `Model:` menu
+5. In the resulting `Configure WeatherSnoop 3+ Agent` dialog, you have some options:
+ i. First, you must identify the WeatherSnoop instance - the most convenient way is to select it from the `Select WeatherSnoop instance` popup. This popup shows all WeatherSnoop 3+ instances running on your local network. If you don't see your WeatherSnoop or if it's on a different network, click the `Manually enter network address` checkbox, enter the host and port and click `Scan for Agents`.
+ ii. Next, the `Select WeatherSnoop agent popup` list should show all agents that WeatherSnoop has open. If there are none in the list, make sure WeatherSnoop is configured to share data and that it has at least one open agent. You can click `Scan for Agents` if you made any changes in WeatherSnoop.
+ iii. Once you've selected the appropriate agent, select the field you want displayed in the `State` column of the Device List. Most people will probably select the temperature but you can select whatever you want.
+6. Click `Save`
+7. Name the timer something useful and close the `Create New Device` dialog
 
 As stated above, the device states presented in the device will vary based on what's provided by the selected agent. Contact Tee-Boy about any data you believe should be available for your agent type that doesn't show up.
 
