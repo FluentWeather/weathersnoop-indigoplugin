@@ -107,6 +107,6 @@ Plugin ID: com.perceptiveautomation.indigoplugin.weathersnoop
 
 ## Support and Troubleshooting
 
-For usage or troubleshooting tips discuss this plugin in the Indigo Domotics forum.
+For usage or troubleshooting tips discuss this plugin in the [Indigo Domotics forum](https://forums.indigodomo.com/viewforum.php?f=280).
 
 
