@@ -103,7 +103,7 @@ Weather Station device types provide you with several device states that you can
 
 Here's the plugin ID in case you need to programmatically restart the plugin:
 
-Plugin ID: com.perceptiveautomation.indigoplugin.weathersnoop
+**Plugin ID**: com.perceptiveautomation.indigoplugin.weathersnoop
 
 ## Support and Troubleshooting
 
