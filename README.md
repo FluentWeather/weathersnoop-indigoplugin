@@ -26,7 +26,7 @@ WeatherSnoop has many great features, one of which is Bonjour discovery which ma
 4. Select `WeatherSnoop 3+ Agent` from the `Model:` menu
 5. In the resulting `Configure WeatherSnoop 3+ Agent` dialog, you have some options:
  i. First, you must identify the WeatherSnoop instance - the most convenient way is to select it from the `Select WeatherSnoop instance` popup. This popup shows all WeatherSnoop 3+ instances running on your local network. If you don't see your WeatherSnoop or if it's on a different network, click the `Manually enter network address` checkbox, enter the host and port and click `Scan for Agents`.
- ii. Next, the `Select WeatherSnoop agent popup` list should show all agents that WeatherSnoop has open. If there are none in the list, make sure WeatherSnoop is configured to share data and that it has at least one open agent. You can click `Scan for Agents` if you made any changes in WeatherSnoop.
+ ii. Next, the `Select WeatherSnoop agent` popup list should show all agents that WeatherSnoop has open. If there are none in the list, make sure WeatherSnoop is configured to share data and that it has at least one open agent. You can click `Scan for Agents` if you made any changes in WeatherSnoop.
  iii. Once you've selected the appropriate agent, select the field you want displayed in the `State` column of the Device List. Most people will probably select the temperature but you can select whatever you want.
 6. Click `Save`
 7. Name the timer something useful and close the `Create New Device` dialog
@@ -51,53 +51,53 @@ You can trigger off of various state changes on a Weather Station - like when th
 
 Weather Station device types provide you with several device states that you can use in the Trigger dialog:
 
-* Forecast - A word or two that describes conditions as supplied by the weather station
-* Outdoor Temperature °F - Outdoor temperature in Fahrenheit
-* Outdoor Temperature °C - Outdoor temperature in Celsius
-* Indoor Temperature °F - Indoor temperature in Fahrenheit
-* Indoor Temperature °C - Indoor temperature in Celsius
-* Temperature Sensor # °F - Up to 10 different external temperature sensors in Fahrenheit
-* Temperature Sensor # °C - Up to 10 different external temperature sensors in Celsius
-* Outdoor Relative Humidity - The relative humidity outside
-* Indoor Relative Humidity - The relative humidity inside
-* Humidity Sensor # - The relative humidity for up to 10 external humidity sensors
-* Outdoor Dew Point °F - Outside dew point in Fahrenheit
-* Outdoor Dew Point °C - Outside dew point in Celsius
-* Indoor Dew Point °F - Inside dew point in Fahrenheit
-* Indoor Dew Point °C - Inside dew point in Celsius
-* Outdoor Heat Index °F - Outside heat index in Fahrenheit
-* Outdoor Heat Index °C - Outside heat index in Celsius
-* Indoor Heat Index °F - Inside heat index in Fahrenheit
-* Indoor Heat Index °C - Inside heat index in Celsius
-* Wind Degrees - Wind direction in degrees
-* Wind MPH - Wind speed in miles per hour
-* Wind KPH - Wind speed in kilometers per hour
-* Wind Knots - Wind speed in knots
-* Wind Gust MPH - Wind gust speed in miles per hour
-* Wind Gust KPH - Wind gust speed in kilometers per hour
-* Wind Gust Knots - Wind gust speed in knots
-* Wind Chill °F - Outside wind chill in Fahrenheit
-* Wind Chill °C - Outside wind chill in Celsius
-* Pressure Trend - A word or two describing the pressure trend
-* Pressure (inches) - Pressure in inches
-* Pressure (mbar) - Pressure in millibars
-* Rain Rate Inches per Hour - The current rain rate in inches per hour
-* Rain Rate Millimeters per Hour - The current rain rate in millimeters per hour
-* Rain Today Inches - Today's rain total in inches
-* Rain Today Millimeters - Today's rain total in millimeters
-* Rain Yesterday Inches - Yesterday's rain total in inches
-* Rain Yesterday Millimeters - Yesterday's rain total in millimeters
-* Rain Two Day Inches - Today's + Yesterday's rain total in inches (useful for sprinkler watering logic)
-* Rain Two Day Millimeters - Today's + Yesterday's rain total in millimeters (useful for sprinkler watering logic)
-* Rain Month Inches - This month's rain total in inches
-* Rain Month Millimeters - This month's rain total in millimeters
-* Rain Year Inches - This year's rain total in inches
-* Rain Year Millimeters - This year's rain total in millimeters
-* Rain Total Inches - The rain total in inches for the life of this station (or it's last reset)
-* Rain Total Millimeters - The rain total in millimeters for the life of this station (or it's last reset)
-* Location - The name of the station as specified in WeatherSnoop
-* Latitude - Latitude of the station as specified in WeatherSnoop
-* Longitude - Longitude of the station as specified in WeatherSnoop
+* `Forecast` - A word or two that describes conditions as supplied by the weather station
+* `Outdoor Temperature °F` - Outdoor temperature in Fahrenheit
+* `Outdoor Temperature °C` - Outdoor temperature in Celsius
+* `Indoor Temperature °F` - Indoor temperature in Fahrenheit
+* `Indoor Temperature °C` - Indoor temperature in Celsius
+* `Temperature Sensor # °F` - Up to 10 different external temperature sensors in Fahrenheit
+* `Temperature Sensor # °C` - Up to 10 different external temperature sensors in Celsius
+* `Outdoor Relative Humidity` - The relative humidity outside
+* `Indoor Relative Humidity` - The relative humidity inside
+* `Humidity Sensor #` - The relative humidity for up to 10 external humidity sensors
+* `Outdoor Dew Point °F` - Outside dew point in Fahrenheit
+* `Outdoor Dew Point °C` - Outside dew point in Celsius
+* `Indoor Dew Point °F` - Inside dew point in Fahrenheit
+* `Indoor Dew Point °C` - Inside dew point in Celsius
+* `Outdoor Heat Index °F` - Outside heat index in Fahrenheit
+* `Outdoor Heat Index °C` - Outside heat index in Celsius
+* `Indoor Heat Index °F` - Inside heat index in Fahrenheit
+* `Indoor Heat Index °C` - Inside heat index in Celsius
+* `Wind Degrees` - Wind direction in degrees
+* `Wind MPH` - Wind speed in miles per hour
+* `Wind KPH` - Wind speed in kilometers per hour
+* `Wind Knots` - Wind speed in knots
+* `Wind Gust MPH` - Wind gust speed in miles per hour
+* `Wind Gust KPH` - Wind gust speed in kilometers per hour
+* `Wind Gust Knots` - Wind gust speed in knots
+* `Wind Chill °F` - Outside wind chill in Fahrenheit
+* `Wind Chill °C` - Outside wind chill in Celsius
+* `Pressure Trend` - A word or two describing the pressure trend
+* `Pressure (inches)` - Pressure in inches
+* `Pressure (mbar)` - Pressure in millibars
+* `Rain Rate Inches per Hour` - The current rain rate in inches per hour
+* `Rain Rate Millimeters per Hour` - The current rain rate in millimeters per hour
+* `Rain Today Inches` - Today's rain total in inches
+* `Rain Today Millimeters` - Today's rain total in millimeters
+* `Rain Yesterday Inches` - Yesterday's rain total in inches
+* `Rain Yesterday Millimeters` - Yesterday's rain total in millimeters
+* `Rain Two Day Inches` - Today's + Yesterday's rain total in inches (useful for sprinkler watering logic)
+* `Rain Two Day Millimeters` - Today's + Yesterday's rain total in millimeters (useful for sprinkler watering logic)
+* `Rain Month Inches` - This month's rain total in inches
+* `Rain Month Millimeters` - This month's rain total in millimeters
+* `Rain Year Inches` - This year's rain total in inches
+* `Rain Year Millimeters` - This year's rain total in millimeters
+* `Rain Total Inches` - The rain total in inches for the life of this station (or it's last reset)
+* `Rain Total Millimeters` - The rain total in millimeters for the life of this station (or it's last reset)
+* `Location` - The name of the station as specified in WeatherSnoop
+* `Latitude` - Latitude of the station as specified in WeatherSnoop
+* `Longitude` - Longitude of the station as specified in WeatherSnoop
 
 ## Scripting Support
 
