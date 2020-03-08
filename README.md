@@ -1,6 +1,6 @@
 # Indigo Plugin for WeatherSnoop
 
-This plugin allows you to get data from the WeatherSnoop application into [Indigo](http://wwwindigodomo.com). You may create as many “Weather Station” devices as you like - one for each instance of WeatherSnoop that you have (WeatherSnoop 2.x only supports one station at a time, WeatherSnoop can have multiple stations known as agents). WeatherSnoop, with it's ability to connect to local weather station hardware (it supports a wide variety of hardware) and to Weather Underground, is a great way to get weather data into Indigo for use in your home automation logic. You can start with using a local Weather Underground station and add weather hardware later if you want more accurate data.
+This plugin allows you to get data from the WeatherSnoop application into [Indigo](http://www.indigodomo.com). You may create as many “Weather Station” devices as you like - one for each instance of WeatherSnoop that you have (WeatherSnoop 2.x only supports one station at a time, WeatherSnoop can have multiple stations known as agents). WeatherSnoop, with it's ability to connect to local weather station hardware (it supports a wide variety of hardware) and to Weather Underground, is a great way to get weather data into Indigo for use in your home automation logic. You can start with using a local Weather Underground station and add weather hardware later if you want more accurate data.
 
 Each station will have a variety of device states that hold information that can be used in triggers, conditions, and on control pages.
 
