@@ -1,0 +1,638 @@
+<?xml version="1.0"?>
+<Devices>
+	<Device type="custom" id="ws3station">
+		<Name>WeatherSnoop 3+ Agent</Name>
+		<ConfigUI>
+			<Field id="wsInstance" type="menu" enabledBindingId="manual" enabledBindingNegate="true">
+				<Label>Select WeatherSnoop instance:</Label>
+				<List class="self" method="getWSList" dynamicReload="true" />
+				<CallbackMethod>stationSelected</CallbackMethod>
+			</Field>
+			<Field id="manual" type="checkbox" defaultValue="false">
+				<Label>Manually enter network address:</Label>
+			</Field>
+			<Field id="host" type="textfield" defaultValue="localhost" visibleBindingId="manual" visibleBindingValue="true">
+				<Label>Enter a host name or IP:</Label>
+			</Field>
+			<Field id="port" type="textfield" defaultValue="8000" visibleBindingId="manual" visibleBindingValue="true">
+				<Label>Enter a port number:</Label>
+			</Field>
+			<Field id="lookForAgents" type="button">
+				<Title>Scan for Agents</Title>
+				<CallbackMethod>scanForAgents</CallbackMethod>
+			</Field>
+			<Field id="sep1" type="separator"/>
+			<Field id="wsAgent" type="menu" defaultValue="">
+				<Label>Select WeatherSnoop agent:</Label>
+				<List class="self" method="getWSAgentList" dynamicReload="true" />
+				<CallbackMethod>agentSelected</CallbackMethod>
+			</Field>
+			<Field id="displayState" type="menu" defaultValue="">
+				<Label>Select state for UI:</Label>
+				<List class="self" method="getStateList" dynamicReload="true" />
+			</Field>
+			<Field id="label1" type="label" fontSize="small" fontColor="darkgray" alignWithControl="true">
+				<Label>The value of the state you select will be shown in the "State" column in the Mac client.</Label>
+			</Field>
+			<Field id="address" type="textfield" hidden="true">
+				<Label/>
+			</Field>
+			<Field id="siteName" type="textfield" hidden="true">
+				<Label/>
+			</Field>
+		</ConfigUI>
+		<States>
+			<State id="name">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Name</TriggerLabel>
+				<ControlPageLabel>Name</ControlPageLabel>
+			</State>
+			<State id="location">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Location</TriggerLabel>
+				<ControlPageLabel>Location</ControlPageLabel>
+			</State>
+			<State id="longitude">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Longitude</TriggerLabel>
+				<ControlPageLabel>Longitude</ControlPageLabel>
+			</State>
+			<State id="latitude">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Latitude</TriggerLabel>
+				<ControlPageLabel>Latitude</ControlPageLabel>
+			</State>
+			<State id="elevation">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Elevation</TriggerLabel>
+				<ControlPageLabel>Elevation</ControlPageLabel>
+			</State>
+			<State id="agent">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Agent</TriggerLabel>
+				<ControlPageLabel>Agent</ControlPageLabel>
+			</State>
+			<State id="uri">
+				<ValueType>String</ValueType>
+				<TriggerLabel>URI</TriggerLabel>
+				<ControlPageLabel>URI</ControlPageLabel>
+			</State>
+			<State id="version">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Version</TriggerLabel>
+				<ControlPageLabel>Version</ControlPageLabel>
+			</State>
+			<State id="sep1">
+				<ValueType>Separator</ValueType>
+			</State>
+		</States>
+	</Device>
+	<!-- Define some devices -->
+	<Device type="custom" id="station">
+		<Name>WeatherSnoop 2 Weather Station</Name>
+		<ConfigUI>
+			<Field id="host" type="textfield" defaultValue="localhost">
+				<Label>Enter a host name or IP:</Label>
+			</Field>
+			<Field id="port" type="textfield" defaultValue="8000">
+				<Label>Enter a port number:</Label>
+			</Field>
+			<Field id="address" type="textfield" hidden="true">
+				<Label/>
+			</Field>
+		</ConfigUI>
+		<UiDisplayStateId>temperatureF</UiDisplayStateId>
+		<States>
+			<State id="forecast">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Forecast</TriggerLabel>
+				<ControlPageLabel>Forecast</ControlPageLabel>
+			</State>
+			<State id="sep0">
+				<ValueType>Separator</ValueType>
+			</State>
+			<State id="temperatureF">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Outdoor Temperature °F</TriggerLabel>
+				<ControlPageLabel>Outdoor Current Temperature °F</ControlPageLabel>
+			</State>
+			<State id="temperatureC">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Outdoor Temperature °C</TriggerLabel>
+				<ControlPageLabel>Outdoor Current Temperature °C</ControlPageLabel>
+			</State>
+			<State id="temperatureIndoorF">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Indoor Temperature °F</TriggerLabel>
+				<ControlPageLabel>Current Indoor Temperature °F</ControlPageLabel>
+			</State>
+			<State id="temperatureIndoorC">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Indoor Temperature °C</TriggerLabel>
+				<ControlPageLabel>Current Indoor Temperature °C</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor01F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 1 °F</TriggerLabel>
+				<ControlPageLabel>Current Sensor 1 Temperature °F</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor01C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 1 °C</TriggerLabel>
+				<ControlPageLabel>Current Sensor 1 Temperature °C</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor02F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 2 °F</TriggerLabel>
+				<ControlPageLabel>Current Sensor 2 Temperature °F</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor02C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 2 °C</TriggerLabel>
+				<ControlPageLabel>Current Sensor 2 Temperature °C</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor03F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 3 °F</TriggerLabel>
+				<ControlPageLabel>Current Sensor 3 Temperature °F</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor03C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 3 °C</TriggerLabel>
+				<ControlPageLabel>Current Sensor 3 Temperature °C</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor04F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 4 °F</TriggerLabel>
+				<ControlPageLabel>Current Sensor 4 Temperature °F</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor04C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 4 °C</TriggerLabel>
+				<ControlPageLabel>Current Sensor 4 Temperature °C</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor05F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 5 °F</TriggerLabel>
+				<ControlPageLabel>Current Sensor 5 Temperature °F</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor05C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 5 °C</TriggerLabel>
+				<ControlPageLabel>Current Sensor 5 Temperature °C</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor06F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 6 °F</TriggerLabel>
+				<ControlPageLabel>Current Sensor 6 Temperature °F</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor06C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 6 °C</TriggerLabel>
+				<ControlPageLabel>Current Sensor 6 Temperature °C</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor07F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 7 °F</TriggerLabel>
+				<ControlPageLabel>Current Sensor 7 Temperature °F</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor07C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 7 °C</TriggerLabel>
+				<ControlPageLabel>Current Sensor 7 Temperature °C</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor08F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 8 °F</TriggerLabel>
+				<ControlPageLabel>Current Sensor 8 Temperature °F</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor08C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 8 °C</TriggerLabel>
+				<ControlPageLabel>Current Sensor 8 Temperature °C</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor09F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 9 °F</TriggerLabel>
+				<ControlPageLabel>Current Sensor 9 Temperature °F</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor09C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 9 °C</TriggerLabel>
+				<ControlPageLabel>Current Sensor 9 Temperature °C</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor10F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 10 °F</TriggerLabel>
+				<ControlPageLabel>Current Sensor 10 Temperature °F</ControlPageLabel>
+			</State>
+			<State id="temperatureSensor10C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Sensor 10 °C</TriggerLabel>
+				<ControlPageLabel>Current Sensor 10 Temperature °C</ControlPageLabel>
+			</State>
+			<State id="sep1">
+				<ValueType>Separator</ValueType>
+			</State>
+			<State id="humidity">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Outdoor Relative Humidity</TriggerLabel>
+				<ControlPageLabel>Current Outdoor Relative Humidity</ControlPageLabel>
+			</State>
+			<State id="humidityIndoor">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Indoor Relative Humidity</TriggerLabel>
+				<ControlPageLabel>Indoor Current Relative Humidity</ControlPageLabel>
+			</State>
+			<State id="humiditySensor01">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Humidity Sensor 1</TriggerLabel>
+				<ControlPageLabel>Current Sensor 1 Humidity</ControlPageLabel>
+			</State>
+			<State id="humiditySensor02">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Humidity Sensor 2</TriggerLabel>
+				<ControlPageLabel>Current Sensor 2 Humidity</ControlPageLabel>
+			</State>
+			<State id="humiditySensor03">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Humidity Sensor 3</TriggerLabel>
+				<ControlPageLabel>Current Sensor 3 Humidity</ControlPageLabel>
+			</State>
+			<State id="humiditySensor04">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Humidity Sensor 4</TriggerLabel>
+				<ControlPageLabel>Current Sensor 4 Humidity</ControlPageLabel>
+			</State>
+			<State id="humiditySensor05">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Humidity Sensor 5</TriggerLabel>
+				<ControlPageLabel>Current Sensor 5 Humidity</ControlPageLabel>
+			</State>
+			<State id="humiditySensor06">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Humidity Sensor 6</TriggerLabel>
+				<ControlPageLabel>Current Sensor 6 Humidity</ControlPageLabel>
+			</State>
+			<State id="humiditySensor07">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Humidity Sensor 7</TriggerLabel>
+				<ControlPageLabel>Current Sensor 7 Humidity</ControlPageLabel>
+			</State>
+			<State id="humiditySensor08">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Humidity Sensor 8</TriggerLabel>
+				<ControlPageLabel>Current Sensor 8 Humidity</ControlPageLabel>
+			</State>
+			<State id="humiditySensor09">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Humidity Sensor 9</TriggerLabel>
+				<ControlPageLabel>Current Sensor 9 Humidity</ControlPageLabel>
+			</State>
+			<State id="humiditySensor10">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Humidity Sensor 10</TriggerLabel>
+				<ControlPageLabel>Current Sensor 10 Humidity</ControlPageLabel>
+			</State>
+			<State id="sep2">
+				<ValueType>Separator</ValueType>
+			</State>
+			<State id="soilTemperatureSensor01F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Soil Temperature Sensor 1 °F</TriggerLabel>
+				<ControlPageLabel>Soil Temperature Sensor 1 °F</ControlPageLabel>
+			</State>
+			<State id="soilTemperatureSensor01C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Soil Temperature Sensor 1 °C</TriggerLabel>
+				<ControlPageLabel>Soil Temperature Sensor 1 °C</ControlPageLabel>
+			</State>
+			<State id="soilTemperatureSensor02F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Soil Temperature Sensor 2 °F</TriggerLabel>
+				<ControlPageLabel>Soil Temperature Sensor 2 °F</ControlPageLabel>
+			</State>
+			<State id="soilTemperatureSensor02C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Soil Temperature Sensor 2 °C</TriggerLabel>
+				<ControlPageLabel>Soil Temperature Sensor 2 °C</ControlPageLabel>
+			</State>
+			<State id="soilTemperatureSensor03F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Soil Temperature Sensor 3 °F</TriggerLabel>
+				<ControlPageLabel>Soil Temperature Sensor 3 °F</ControlPageLabel>
+			</State>
+			<State id="soilTemperatureSensor03C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Soil Temperature Sensor 3 °C</TriggerLabel>
+				<ControlPageLabel>Soil Temperature Sensor 3 °C</ControlPageLabel>
+			</State>
+			<State id="soilTemperatureSensor04F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Soil Temperature Sensor 4 °F</TriggerLabel>
+				<ControlPageLabel>Soil Temperature Sensor 4 °F</ControlPageLabel>
+			</State>
+			<State id="soilTemperatureSensor04C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Soil Temperature Sensor 4 °C</TriggerLabel>
+				<ControlPageLabel>Soil Temperature Sensor 4 °C</ControlPageLabel>
+			</State>
+			<State id="soilMoistureSensor01">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Soil Moisture Sensor 1</TriggerLabel>
+				<ControlPageLabel>Soil Moisture Sensor 1</ControlPageLabel>
+			</State>
+			<State id="soilMoistureSensor02">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Soil Moisture Sensor 2</TriggerLabel>
+				<ControlPageLabel>Soil Moisture Sensor 2</ControlPageLabel>
+			</State>
+			<State id="soilMoistureSensor03">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Soil Moisture Sensor 3</TriggerLabel>
+				<ControlPageLabel>Soil Moisture Sensor 3</ControlPageLabel>
+			</State>
+			<State id="soilMoistureSensor04">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Soil Moisture Sensor 4</TriggerLabel>
+				<ControlPageLabel>Soil Moisture Sensor 4</ControlPageLabel>
+			</State>
+			<State id="sep3">
+				<ValueType>Separator</ValueType>
+			</State>
+			<State id="leafTemperatureSensor01F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Leaf Temperature Sensor 1 °F</TriggerLabel>
+				<ControlPageLabel>Leaf Temperature Sensor 1 °F</ControlPageLabel>
+			</State>
+			<State id="leafTemperatureSensor01C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Leaf Temperature Sensor 1 °C</TriggerLabel>
+				<ControlPageLabel>Leaf Temperature Sensor 1 °C</ControlPageLabel>
+			</State>
+			<State id="leafTemperatureSensor02F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Leaf Temperature Sensor 2 °F</TriggerLabel>
+				<ControlPageLabel>Leaf Temperature Sensor 2 °F</ControlPageLabel>
+			</State>
+			<State id="leafTemperatureSensor02C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Leaf Temperature Sensor 2 °C</TriggerLabel>
+				<ControlPageLabel>Leaf Temperature Sensor 2 °C</ControlPageLabel>
+			</State>
+			<State id="leafTemperatureSensor03F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Leaf Temperature Sensor 3 °F</TriggerLabel>
+				<ControlPageLabel>Leaf Temperature Sensor 3 °F</ControlPageLabel>
+			</State>
+			<State id="leafTemperatureSensor03C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Leaf Temperature Sensor 3 °C</TriggerLabel>
+				<ControlPageLabel>Leaf Temperature Sensor 3 °C</ControlPageLabel>
+			</State>
+			<State id="leafTemperatureSensor04F">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Leaf Temperature Sensor 4 °F</TriggerLabel>
+				<ControlPageLabel>Leaf Temperature Sensor 4 °F</ControlPageLabel>
+			</State>
+			<State id="leafTemperatureSensor04C">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Leaf Temperature Sensor 4 °C</TriggerLabel>
+				<ControlPageLabel>Leaf Temperature Sensor 4 °C</ControlPageLabel>
+			</State>
+			<State id="leafMoistureSensor01">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Leaf Moisture Sensor 1</TriggerLabel>
+				<ControlPageLabel>Leaf Moisture Sensor 1</ControlPageLabel>
+			</State>
+			<State id="leafMoistureSensor02">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Leaf Moisture Sensor 2</TriggerLabel>
+				<ControlPageLabel>Leaf Moisture Sensor 2</ControlPageLabel>
+			</State>
+			<State id="leafMoistureSensor03">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Leaf Moisture Sensor 3</TriggerLabel>
+				<ControlPageLabel>Leaf Moisture Sensor 3</ControlPageLabel>
+			</State>
+			<State id="leafMoistureSensor04">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Leaf Moisture Sensor 4</TriggerLabel>
+				<ControlPageLabel>Leaf Moisture Sensor 4</ControlPageLabel>
+			</State>
+			<State id="sep4">
+				<ValueType>Separator</ValueType>
+			</State>
+			<State id="dewPointF">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Outdoor Dew Point °F</TriggerLabel>
+				<ControlPageLabel>Current Outdoor Dew Point °F</ControlPageLabel>
+			</State>
+			<State id="dewPointC">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Outdoor Dew Point °C</TriggerLabel>
+				<ControlPageLabel>Current Outdoor Dew Point °C</ControlPageLabel>
+			</State>
+			<State id="dewPointIndoorF">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Indoor Dew Point °F</TriggerLabel>
+				<ControlPageLabel>Current Indoor Dew Point °F</ControlPageLabel>
+			</State>
+			<State id="dewPointIndoorC">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Indoor Dew Point °C</TriggerLabel>
+				<ControlPageLabel>Current Indoor Dew Point °C</ControlPageLabel>
+			</State>
+			<State id="heatIndexF">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Outdoor Heat Index °F</TriggerLabel>
+				<ControlPageLabel>Current Outdoor Heat Index °F</ControlPageLabel>
+			</State>
+			<State id="heatIndexC">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Outdoor Heat Index °C</TriggerLabel>
+				<ControlPageLabel>Current Outdoor Heat Index °C</ControlPageLabel>
+			</State>
+			<State id="heatIndexIndoorF">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Indoor Heat Index °F</TriggerLabel>
+				<ControlPageLabel>Current Indoor Heat Index °F</ControlPageLabel>
+			</State>
+			<State id="heatIndexIndoorC">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Indoor Heat Index °C</TriggerLabel>
+				<ControlPageLabel>Current Indoor Heat Index °C</ControlPageLabel>
+			</State>
+			<State id="sep5">
+				<ValueType>Separator</ValueType>
+			</State>
+			<State id="windDegrees">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Wind Degrees</TriggerLabel>
+				<ControlPageLabel>Current Wind Degrees</ControlPageLabel>
+			</State>
+			<State id="windMPH">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Wind MPH</TriggerLabel>
+				<ControlPageLabel>Current Wind MPH</ControlPageLabel>
+			</State>
+			<State id="windKPH">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Wind KPH</TriggerLabel>
+				<ControlPageLabel>Current Wind KPH</ControlPageLabel>
+			</State>
+			<State id="windKnots">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Wind Knots</TriggerLabel>
+				<ControlPageLabel>Current Wind Knots</ControlPageLabel>
+			</State>
+			<State id="windGustMPH">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Wind Gust MPH</TriggerLabel>
+				<ControlPageLabel>Current Wind Gust MPH</ControlPageLabel>
+			</State>
+			<State id="windGustKPH">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Wind Gust KPH</TriggerLabel>
+				<ControlPageLabel>Current Wind Gust KPH</ControlPageLabel>
+			</State>
+			<State id="windGustKnots">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Wind Gust Knots</TriggerLabel>
+				<ControlPageLabel>Current Wind Gust Knots</ControlPageLabel>
+			</State>
+			<State id="windChillF">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Wind Chill °F</TriggerLabel>
+				<ControlPageLabel>Current Wind Chill °F</ControlPageLabel>
+			</State>
+			<State id="windChillC">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Wind Chill °C</TriggerLabel>
+				<ControlPageLabel>Current Wind Chill °C</ControlPageLabel>
+			</State>
+			<State id="sep6">
+				<ValueType>Separator</ValueType>
+			</State>
+			<State id="pressureTrend">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Pressure Trend</TriggerLabel>
+				<ControlPageLabel>Pressure Trend</ControlPageLabel>
+			</State>
+			<State id="pressureInches">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Pressure (inches)</TriggerLabel>
+				<ControlPageLabel>Current Pressure (inches)</ControlPageLabel>
+			</State>
+			<State id="pressureMillibars">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Pressure (mbar)</TriggerLabel>
+				<ControlPageLabel>Current Pressure (mbar)</ControlPageLabel>
+			</State>
+			<State id="sep7">
+				<ValueType>Separator</ValueType>
+			</State>
+			<State id="rainRateInches">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Rain Rate Inches per Hour</TriggerLabel>
+				<ControlPageLabel>Current Rain Rate Inches per Hour</ControlPageLabel>
+			</State>
+			<State id="rainRateMillimeters">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Rain Rate Millimeters per Hour</TriggerLabel>
+				<ControlPageLabel>Current Rain Rate Millimeters per Hour</ControlPageLabel>
+			</State>
+			<State id="rainTodayInches">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Rain Today Inches</TriggerLabel>
+				<ControlPageLabel>Current Rain Today Inches</ControlPageLabel>
+			</State>
+			<State id="rainTodayMillimeters">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Rain Today Millimeters</TriggerLabel>
+				<ControlPageLabel>Current Rain Millimeters</ControlPageLabel>
+			</State>
+			<State id="rainYesterdayInches">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Rain Yesterday Inches</TriggerLabel>
+				<ControlPageLabel>Rain Yesterday Inches</ControlPageLabel>
+			</State>
+			<State id="rainYesterdayMillimeters">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Rain Yesterday Millimeters</TriggerLabel>
+				<ControlPageLabel>Rain Yesterday Millimeters</ControlPageLabel>
+			</State>
+			<State id="rainTwoDayInches">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Rain Two Day Inches</TriggerLabel>
+				<ControlPageLabel>Rain Two Day Inches</ControlPageLabel>
+			</State>
+			<State id="rainTwoDayMillimeters">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Rain Two Day Millimeters</TriggerLabel>
+				<ControlPageLabel>Rain Two Day Millimeters</ControlPageLabel>
+			</State>
+			<State id="rainMonthInches">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Rain Month Inches</TriggerLabel>
+				<ControlPageLabel>Current Rain Month Inches</ControlPageLabel>
+			</State>
+			<State id="rainMonthMillimeters">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Rain Month Millimeters</TriggerLabel>
+				<ControlPageLabel>Current Month Millimeters</ControlPageLabel>
+			</State>
+			<State id="rainYearInches">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Rain Year Inches</TriggerLabel>
+				<ControlPageLabel>Current Rain Year Inches</ControlPageLabel>
+			</State>
+			<State id="rainYearMillimeters">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Rain Year Millimeters</TriggerLabel>
+				<ControlPageLabel>Current Year Millimeters</ControlPageLabel>
+			</State>
+			<State id="rainTotalInches">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Rain Total Inches</TriggerLabel>
+				<ControlPageLabel>Current Total Year Inches</ControlPageLabel>
+			</State>
+			<State id="rainTotalMillimeters">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Rain Total Millimeters</TriggerLabel>
+				<ControlPageLabel>Current Total Millimeters</ControlPageLabel>
+			</State>
+			<State id="sep8">
+				<ValueType>Separator</ValueType>
+			</State>
+			<State id="uvIndex">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>UV Index</TriggerLabel>
+				<ControlPageLabel>Current UV Index</ControlPageLabel>
+			</State>
+			<State id="solarRadiation">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Solar Radiation</TriggerLabel>
+				<ControlPageLabel>Current Solar Radiation</ControlPageLabel>
+			</State>
+			<State id="sep9">
+				<ValueType>Separator</ValueType>
+			</State>
+			<State id="location">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Location</TriggerLabel>
+				<ControlPageLabel>Location</ControlPageLabel>
+			</State>
+			<State id="latitude">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Latitude</TriggerLabel>
+				<ControlPageLabel>Latitude</ControlPageLabel>
+			</State>
+			<State id="longitude">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Longitude</TriggerLabel>
+				<ControlPageLabel>Longitude</ControlPageLabel>
+			</State>
+		</States>
+	</Device>
+</Devices>
