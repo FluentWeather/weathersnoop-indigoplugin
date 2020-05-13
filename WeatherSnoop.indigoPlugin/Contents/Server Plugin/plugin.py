@@ -39,6 +39,8 @@ kServiceType = "_http._tcp"
 kWs2FileName = u"/weather.xml"
 kWeatherSnoop3String = u"WeatherSnoop 3"
 kWeatherSnoop4String = u"WeatherSnoop 4"
+kWeatherSnoop5String = u"WeatherSnoop 5"
+kFluentWeatherString = u"Fluent Weather"
 kUnavailableString = u"unavailable"
 kWs2FieldMap = {"forecast":'forecast:value',
     "temperatureF":'temperature:outdoor:value%type=F',
@@ -438,7 +440,7 @@ class Plugin(indigo.PluginBase):
                         command = self.bonjourBrowserCommandQueue.get()
                         self.logger.debug("command: %s" % unicode(command))
                         # WS4: look for either the WS3 or WS4 string in the bonjour broadcast
-                        if command[1].startswith(kWeatherSnoop3String) or command[1].startswith(kWeatherSnoop4String):
+                        if command[1].startswith(kWeatherSnoop3String) or command[1].startswith(kWeatherSnoop4String) or command[1].startswith(kWeatherSnoop5String) or command[1].startswith(kFluentWeatherString):
                             instanceKey = "%s@%s:%s" % (command[1], command[2], command[3])
                             if command[0] == "add":
                                 self.localWsServers[instanceKey] = "%s:%s" % (command[2], command[3])
