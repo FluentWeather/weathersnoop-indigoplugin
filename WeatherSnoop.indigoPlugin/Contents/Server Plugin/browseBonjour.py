@@ -60,7 +60,7 @@ class BonjourBrowserThread(threading.Thread):
                 if browse_sdRef in ready[0]:
                     self.logger.threaddebug("__found a service")
                     pybonjour.DNSServiceProcessResult(browse_sdRef)
-        except Exception, e:
+        except (Exception, e):
             self.logger.threaddebug("__exception in bonjour browser thread: %s", str(e))
             pass
         finally:

@@ -21,13 +21,13 @@ except:
     import simplejson as json
 
 import requests
-import urlparse
+import urllib
 from xml.dom.minidom import parseString
 from datetime import datetime
 import time
-import Queue
+import queue
 import browseBonjour
-import urllib2   # only used for WS2 stations
+#import urllib2   # only used for WS2 stations
 import traceback
 import re
 
@@ -196,7 +196,7 @@ class Plugin(indigo.PluginBase):
         self.debug = pluginPrefs.get("showDebugInfo", False)
         self.deviceList = []
         self.localWsServers = {}
-        self.bonjourBrowserCommandQueue = Queue.Queue()
+        self.bonjourBrowserCommandQueue = queue.Queue()
         self.bonjourBrowser = browseBonjour.BonjourBrowserThread(self.logger.debug, kServiceType, self.bonjourBrowserCommandQueue, kTimeout)
         self.bonjourBrowser.start()
         self.siteFieldCache = {}
@@ -218,7 +218,7 @@ class Plugin(indigo.PluginBase):
             # what kind of icon to show. By default we'll just show temp sensor (see last line of method).
             device.stateListOrDisplayStateIdChanged()
             del self.siteFieldCache[props["wsAgent"]]
-            self.logger.debug("  self.siteFieldCache:\n%s" % unicode(self.siteFieldCache.keys()))
+            self.logger.debug("  self.siteFieldCache:\n%s" % self.siteFieldCache.keys())
         if device.id not in self.deviceList:
             # we added the soil temp so if the current device doesn't have one
             # force it to reload the states
@@ -309,7 +309,7 @@ class Plugin(indigo.PluginBase):
             itemList.append((server, server))
         if len(itemList) == 0:
             itemList.append(("none", "- no weathersnoop servers available -"))
-        self.logger.debug("server popup list: %s" % unicode(itemList))
+        self.logger.debug("server popup list: %s" % itemList)
         return itemList
 
     ########################################
@@ -343,7 +343,7 @@ class Plugin(indigo.PluginBase):
                 self.logger.debug("url: %s" % url)
                 reply = requests.get(url, timeout=5)
                 sitesDict = reply.json()
-                self.logger.debug("sitesDict: %s" % unicode(sitesDict))
+                self.logger.debug("sitesDict: %s" % sitesDict)
                 for siteDict in sitesDict["sites"]:
                     uri = ""
                     try:
@@ -368,7 +368,7 @@ class Plugin(indigo.PluginBase):
                     except Exception as exc:
                         self.logger.error("Couldn't get information for site - check WeatherSnoop for issues: %s" % uri)
                         self.logger.error("Exception: %s" % exc)
-            except Exception, e:
+            except (Exception, e):
                 self.logger.exception("Error getting site information from WeatherSnoop. Make sure that you have a valid IP:Port specified and that WeatherSnoop 3 is running.")
         if len(itemList) == 0:
             itemList.append(("none", "- no agents available -"))
@@ -376,12 +376,12 @@ class Plugin(indigo.PluginBase):
 
     ########################################
     def getStateList(self, filter="", valuesDict=None, typeId="", targetId=0):
-        self.logger.debug("getStateList targetId: %s" % unicode(targetId))
-        self.logger.debug("getStateList valuesDict: %s" % unicode(valuesDict))
+        self.logger.debug("getStateList targetId: %s" % targetId)
+        self.logger.debug("getStateList valuesDict: %s" % valuesDict)
         itemList = [("none", "- no states available -")]
         if "wsAgent" in valuesDict:
             props = self.siteFieldCache.get(valuesDict["wsAgent"], None)
-            self.logger.debug("getStateList siteFieldCache: %s" % unicode(self.siteFieldCache))
+            self.logger.debug("getStateList siteFieldCache: %s" % self.siteFieldCache)
             if not props:
                 try:
                     siteInformation = self.getWs3SiteData(valuesDict["wsAgent"])
@@ -390,12 +390,12 @@ class Plugin(indigo.PluginBase):
                     pass
             if props:
                 states = self.buildDynamicDeviceStates(props)
-                self.logger.debug("getStateList states: %s" % unicode(states))
+                self.logger.debug("getStateList states: %s" % states)
                 if states:
                     keyList = [(value["Key"], value['StateLabel']) for value in states]
                     if keyList:
                         itemList = keyList
-        self.logger.debug("getStateList itemList: %s" % unicode(itemList))
+        self.logger.debug("getStateList itemList: %s" % itemList)
         return itemList
 
     ########################################
@@ -410,7 +410,7 @@ class Plugin(indigo.PluginBase):
 
     ########################################
     def scanForAgents(self, valuesDict, typeId, devId):
-        self.logger.debug("scanForAgents called: %s" % unicode(valuesDict))
+        self.logger.debug("scanForAgents called: %s" % valuesDict)
         if valuesDict["wsInstance"] == "" and not valuesDict["manual"]:
             self.logger.error("No valid WeatherSnoop instance selected")
 
@@ -438,16 +438,16 @@ class Plugin(indigo.PluginBase):
                     # Check the dns queue to see if we need to update our server list
                     while not self.bonjourBrowserCommandQueue.empty():
                         command = self.bonjourBrowserCommandQueue.get()
-                        self.logger.debug("command: %s" % unicode(command))
+                        self.logger.debug("command: %s" % command)
                         # WS4: look for either the WS3 or WS4 string in the bonjour broadcast
                         if command[1].startswith(kWeatherSnoop3String) or command[1].startswith(kWeatherSnoop4String) or command[1].startswith(kWeatherSnoop5String) or command[1].startswith(kFluentWeatherString):
                             instanceKey = "%s@%s:%s" % (command[1], command[2], command[3])
                             if command[0] == "add":
                                 self.localWsServers[instanceKey] = "%s:%s" % (command[2], command[3])
-                                self.logger.debug("Server list: %s" % unicode(self.localWsServers))
+                                self.logger.debug("Server list: %s" % self.localWsServers)
                             else:
                                 del self.localWsServers[instanceKey]
-                                self.logger.debug("Server list: %s" % unicode(self.localWsServers))
+                                self.logger.debug("Server list: %s" % self.localWsServers)
                 except:
                     pass
                 self.sleep(2)
@@ -483,7 +483,7 @@ class Plugin(indigo.PluginBase):
                     props = agentInformation["agent"]["properties"]
                     self.updateWs3KeyValueList(device, agentInformation["agent"], "name", propKey="agent", keyValueList=keyValueList)
                     keyValueList.append(
-                        {'key': "uri", 'value': urlparse.urlparse(localPropsCopy["wsAgent"]).path}
+                        {'key': "uri", 'value': urllib.parse(localPropsCopy["wsAgent"]).path}
                     )
                 else:
                     # Old WS3 stuff
@@ -505,8 +505,8 @@ class Plugin(indigo.PluginBase):
                     if len(keyValueList) > 0:	# Before we add new states better go ahead and push updates first.
                         device.updateStatesOnServer(keyValueList)
                         keyValueList = []
-                    self.logger.debug("  update added states:\n%s" % unicode(statesDiff["addedStates"]))
-                    self.logger.debug("  update deleted states:\n%s" % unicode(statesDiff["deletedStates"]))
+                    self.logger.debug("  update added states:\n%s" % statesDiff["addedStates"])
+                    self.logger.debug("  update deleted states:\n%s" % statesDiff["deletedStates"])
                     self.logger.debug("  update: updating props on the server")
                     localPropsCopy["dynamicStates"] = newStateList
                     device.replacePluginPropsOnServer(localPropsCopy)
@@ -555,13 +555,13 @@ class Plugin(indigo.PluginBase):
             try:
                 self.logger.debug("    Getting weather.xml")
                 f = urllib2.urlopen(theUrl)
-            except urllib2.HTTPError, e:
+            except (urllib2.HTTPError, e):
                 self.logger.exception("Error getting station %s data" % device.name)
                 return
-            except urllib2.URLError, e:
+            except (urllib2.URLError, e):
                 self.logger.exception("Error getting station \"%s\" data (WeatherSnoop isn't running or the agent isn't running)" % device.name)
                 return
-            except Exception, e:
+            except (Exception, e):
                 self.logger.exception("Unknown error for device %s" % device.name)
                 return
             self.logger.debug("    Got weather.xml")
@@ -578,7 +578,7 @@ class Plugin(indigo.PluginBase):
                 else:
                     finalElement = "value"
                 newValueTup = self.getValueFromElement(theDocTree, fieldName, finalElement)
-                self.logger.debug("    Updating device: state=%s fieldName=%s newValueTup=%s" % (state, fieldName, unicode(newValueTup)))
+                self.logger.debug("    Updating device: state=%s fieldName=%s newValueTup=%s" % (state, fieldName, newValueTup))
                 newValue = newValueTup[0]
                 if newValue.startswith("%%"):
                     newValue = "- data unavailable -"
@@ -698,7 +698,7 @@ class Plugin(indigo.PluginBase):
             except:
                 self.logger.debug("WeatherSnoop device \"%s\" reports an incorrect value type for state \"%s\" (can't be converted from string to %s)." % (device.name, propKey, type))
                 newValue = dictionary[property]
-            valueString = unicode(newValue)
+            valueString = newValue
             uiValueString = "".format(valueString, uiVal)
             keyValueList.append({'key':propKey, 'value':newValue, 'uiValue':uiValueString, 'decimalPlaces':places})
         else:
