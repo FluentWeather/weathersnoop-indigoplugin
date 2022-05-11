@@ -27,7 +27,6 @@ from datetime import datetime
 import time
 import queue
 import browseBonjour
-#import urllib2   # only used for WS2 stations
 import traceback
 import re
 
@@ -36,108 +35,11 @@ import re
 ################################################################################
 kTimeout = 5
 kServiceType = "_http._tcp"
-kWs2FileName = u"/weather.xml"
 kWeatherSnoop3String = u"WeatherSnoop 3"
 kWeatherSnoop4String = u"WeatherSnoop 4"
 kWeatherSnoop5String = u"WeatherSnoop 5"
 kFluentWeatherString = u"Fluent Weather"
 kUnavailableString = u"unavailable"
-kWs2FieldMap = {"forecast":'forecast:value',
-    "temperatureF":'temperature:outdoor:value%type=F',
-    "temperatureC":'temperature:outdoor:value%type=C',
-    "temperatureIndoorF":'temperature:indoor:value%type=F',
-    "temperatureIndoorC":'temperature:indoor:value%type=C',
-    "temperatureSensor01F":'temperature:extra%id=1:value%type=F',
-    "temperatureSensor01C":'temperature:extra%id=1:value%type=C',
-    "temperatureSensor02F":'temperature:extra%id=2:value%type=F',
-    "temperatureSensor02C":'temperature:extra%id=2:value%type=C',
-    "temperatureSensor03F":'temperature:extra%id=3:value%type=F',
-    "temperatureSensor03C":'temperature:extra%id=3:value%type=C',
-    "temperatureSensor04F":'temperature:extra%id=4:value%type=F',
-    "temperatureSensor04C":'temperature:extra%id=4:value%type=C',
-    "temperatureSensor05F":'temperature:extra%id=5:value%type=F',
-    "temperatureSensor05C":'temperature:extra%id=5:value%type=C',
-    "temperatureSensor06F":'temperature:extra%id=6:value%type=F',
-    "temperatureSensor06C":'temperature:extra%id=6:value%type=C',
-    "temperatureSensor07F":'temperature:extra%id=7:value%type=F',
-    "temperatureSensor07C":'temperature:extra%id=7:value%type=C',
-    "temperatureSensor08F":'temperature:extra%id=8:value%type=F',
-    "temperatureSensor08C":'temperature:extra%id=8:value%type=C',
-    "temperatureSensor09F":'temperature:extra%id=9:value%type=F',
-    "temperatureSensor09C":'temperature:extra%id=9:value%type=C',
-    "temperatureSensor10F":'temperature:extra%id=10:value%type=F',
-    "temperatureSensor10C":'temperature:extra%id=10:value%type=C',
-    "humidity":'humidity:outdoor:value',
-    "humidityIndoor":'humidity:indoor:value',
-    "humiditySensor01":'humidity:extra%id=1:value',
-    "humiditySensor02":'humidity:extra%id=2:value',
-    "humiditySensor03":'humidity:extra%id=3:value',
-    "humiditySensor04":'humidity:extra%id=4:value',
-    "humiditySensor05":'humidity:extra%id=5:value',
-    "humiditySensor06":'humidity:extra%id=6:value',
-    "humiditySensor07":'humidity:extra%id=7:value',
-    "humiditySensor08":'humidity:extra%id=8:value',
-    "humiditySensor09":'humidity:extra%id=9:value',
-    "humiditySensor10":'humidity:extra%id=10:value',
-    "dewPointF":'dewPoint:outdoor:value%type=F',
-    "dewPointC":'dewPoint:outdoor:value%type=C',
-    "dewPointIndoorF":'dewPoint:indoor:value%type=F',
-    "dewPointIndoorC":'dewPoint:indoor:value%type=C',
-    "heatIndexF":'heatIndex:outdoor:value%type=F',
-    "heatIndexC":'heatIndex:outdoor:value%type=C',
-    "heatIndexIndoorF":'heatIndex:indoor:value%type=F',
-    "heatIndexIndoorC":'heatIndex:indoor:value%type=C',
-    "windDegrees":'wind:direction:value',
-    "windMPH":'wind:speed:value%type=mph',
-    "windKPH":'wind:speed:value%type=kph',
-    "windKnots":'wind:speed:value%type=kn',
-    "windGustMPH":'wind:gust:value%type=mph',
-    "windGustKPH":'wind:gust:value%type=kph',
-    "windGustKnots":'wind:gust:value%type=kn',
-    "windChillF":'windChill:value%type=F',
-    "windChillC":'windChill:value%type=C',
-    "pressureInches":'barometricPressure:value%type=inHg',
-    "pressureMillibars":'barometricPressure:value%type=mb',
-    "pressureTrend":'barometricTrend:value',
-    "rainRateInches":'rain:rate:value%type=in/hr',
-    "rainRateMillimeters":'rain:rate:value%type=mm/hr',
-    "rainTodayInches":'rain:day:value%type=in',
-    "rainTodayMillimeters":'rain:day:value%type=mm',
-    "rainMonthInches":'rain:month:value%type=in',
-    "rainMonthMillimeters":'rain:month:value%type=mm',
-    "rainYearInches":'rain:year:value%type=in',
-    "rainYearMillimeters":'rain:year:value%type=mm',
-    "rainTotalInches":'rain:total:value%type=in',
-    "rainTotalMillimeters":'rain:total:value%type=mm',
-    "soilTemperatureSensor01F":'temperature:soil%id=1:value%type=F',
-    "soilTemperatureSensor01C":'temperature:soil%id=1:value%type=C',
-    "soilTemperatureSensor02F":'temperature:soil%id=2:value%type=F',
-    "soilTemperatureSensor02C":'temperature:soil%id=2:value%type=C',
-    "soilTemperatureSensor03F":'temperature:soil%id=3:value%type=F',
-    "soilTemperatureSensor03C":'temperature:soil%id=3:value%type=C',
-    "soilTemperatureSensor04F":'temperature:soil%id=4:value%type=F',
-    "soilTemperatureSensor04C":'temperature:soil%id=4:value%type=C',
-    "soilMoistureSensor01":'moistures:soil%id=1:value',
-    "soilMoistureSensor02":'moistures:soil%id=2:value',
-    "soilMoistureSensor03":'moistures:soil%id=3:value',
-    "soilMoistureSensor04":'moistures:soil%id=4:value',
-    "leafTemperatureSensor01F":'temperature:leaf%id=1:value%type=F',
-    "leafTemperatureSensor01C":'temperature:leaf%id=1:value%type=C',
-    "leafTemperatureSensor02F":'temperature:leaf%id=2:value%type=F',
-    "leafTemperatureSensor02C":'temperature:leaf%id=2:value%type=C',
-    "leafTemperatureSensor03F":'temperature:leaf%id=3:value%type=F',
-    "leafTemperatureSensor03C":'temperature:leaf%id=3:value%type=C',
-    "leafTemperatureSensor04F":'temperature:leaf%id=4:value%type=F',
-    "leafTemperatureSensor04C":'temperature:leaf%id=4:value%type=C',
-    "leafMoistureSensor01":'moistures:leaf%id=1:value',
-    "leafMoistureSensor02":'moistures:leaf%id=2:value',
-    "leafMoistureSensor03":'moistures:leaf%id=3:value',
-    "leafMoistureSensor04":'moistures:leaf%id=4:value',
-    "uvIndex":'uvIndex:value',
-    "solarRadiation":'solarRadiation:value',
-    "location":'station:name:value',
-    "latitude":'station:location:latitude:decimal',
-    "longitude":'station:location:longitude:decimal'}
 
 ########################################
 # Plugin shared methods
@@ -549,126 +451,6 @@ class Plugin(indigo.PluginBase):
                     self.logger.error("Couldn't get site information from WeatherSnoop for device \"%s\" - check to see if WeatherSnoop is running correctly." % device.name)
                     device.setErrorStateOnServer(kUnavailableString)
                     self.logger.debug("Error specifics:\n%s" % traceback.format_exc(10))
-        else:
-            # download the file
-            theUrl = u"http://" + device.pluginProps["address"] + kWs2FileName
-            try:
-                self.logger.debug("    Getting weather.xml")
-                f = urllib2.urlopen(theUrl)
-            except (urllib2.HTTPError, e):
-                self.logger.exception("Error getting station %s data" % device.name)
-                return
-            except (urllib2.URLError, e):
-                self.logger.exception("Error getting station \"%s\" data (WeatherSnoop isn't running or the agent isn't running)" % device.name)
-                return
-            except (Exception, e):
-                self.logger.exception("Unknown error for device %s" % device.name)
-                return
-            self.logger.debug("    Got weather.xml")
-            theXml = f.read()
-            #self.logger.debug(theXml)
-            theDocTree = parseString(theXml)
-            keyValueList = []
-            for state,fieldName in kWs2FieldMap.iteritems():
-                # longitude and latitude are the only two elements that don't stop with <value> so
-                # we need to pass in <decimal>, which is the final element name that contains the
-                # actual value
-                if (state == "longitude") or (state == "latitude"):
-                    finalElement = "decimal"
-                else:
-                    finalElement = "value"
-                newValueTup = self.getValueFromElement(theDocTree, fieldName, finalElement)
-                self.logger.debug("    Updating device: state=%s fieldName=%s newValueTup=%s" % (state, fieldName, newValueTup))
-                newValue = newValueTup[0]
-                if newValue.startswith("%%"):
-                    newValue = "- data unavailable -"
-                if (newValue == "Uninitialized") or (newValue.startswith("-9999")):
-                    newValue = "- data unavailable -"
-                if ((state.find("Inches") != -1) and (newValue == "- data unavailable -") and (state != "pressureInches")):
-                    newValue = 0.00
-                if ((state.find("Millimeters") != -1) and (newValue == "- data unavailable -")):
-                    newValue = 0
-                if newValueTup[1] != "":
-                    # we got a new timestamp, so let's do a little sanity checking
-                    # first, put it into a form where we can use strptime to get a real python date
-                    newValueDateString = ' '.join(newValueTup[1].split(' ')[0:2])
-                    thisUpdate = datetime.strptime(newValueDateString,"%Y-%m-%d %H:%M:%S")
-                    #self.logger.debug("        newValueDateString=%s thisUpdate:=%s" % (newValueDateString, str(thisUpdate)))
-                    # here's where we need to check the timestamp - if it's older than 24 hours
-                    # update the state with "- data unavailable -"
-                    if finalElement == "value":
-                        # get the current value string from pluginProps
-                        if state+"-ts" in device.pluginProps:
-                            # get the date
-                            lastUpdate = datetime.strptime(device.pluginProps[state+"-ts"], "%Y-%m-%d %H:%M:%S")
-                            elapsedTime = thisUpdate - lastUpdate
-                            curDateTime = datetime.now()
-                            ageDelta = curDateTime - thisUpdate
-                            ageInDays = ageDelta.days
-                            #self.logger.debug("        Updating device: lastUpdate=%s elapsedTime=%s" % (str(lastUpdate),str(elapsedTime)))
-                            elapsedTimeInHours = elapsedTime.seconds/60/60 # calculate elapsed time in whole hours
-                            #self.logger.debug("        elapsedTimeInHours=%i ageInDays=%i" % (elapsedTimeInHours, ageInDays))
-                            # Skip soil and leaf temps - they apparently can stay constant over 24 hours
-                            if (not state.startswith("leaf")) and (not state.startswith("soil")):
-                                if ((elapsedTimeInHours > 23) or (ageInDays > 0)) and (not state.startswith("rain")):
-                                    # The data is older than 24 hours, so we want to mark it as unavailable unless it's a rain field
-                                    newValue = "- data unavailable -"
-                                else:
-                                    # if it's rainToday* and we just rolled over to the next day, reset rain yesterday
-                                    if (state == 'rainTodayInches') or (state == 'rainTodayMillimeters'):
-                                        if curDateTime.day != lastUpdate.day:
-                                            # we rolled over the day mark, so we need to save off the old value into
-                                            # yesterday's value
-                                            if state == 'rainTodayInches':
-                                                self.updateKeyValueList(device, 'rainYesterdayInches', device.states['rainTodayInches'], keyValueList)
-                                                self.logger.debug("        midnight crossed, setting yesterday to %s inches" % (device.states['rainTodayInches'],))
-                                            if state == 'rainTodayMillimeters':
-                                                self.updateKeyValueList(device, 'rainYesterdayMillimeters', device.states['rainTodayMillimeters'], keyValueList)
-                                                self.logger.debug("        midnight crossed, setting yesterday to %s millimeters" % (device.states['rainTodayMillimeters'],))
-                                        localPropsCopy[state+"-ts"] = curDateTime.strftime("%Y-%m-%d %H:%M:%S")
-                                    else:
-                                        localPropsCopy[state+"-ts"] = newValueDateString
-                                    localPropsUpdated = True
-                        else:
-                            # date doesn't exist, so add the date and continue to the update
-                            localPropsCopy[state+"-ts"] = newValueDateString
-                            localPropsUpdated = True
-                            elapsedTime = datetime.now() - thisUpdate
-                            if elapsedTime.days > 0:
-                                # The data is older than 24 hours, so we want to mark it as unavailable
-                                if ((state.find("Inches") != -1) and (state != "pressureInches")):
-                                    newValue = 0.00
-                                elif (state.find("Millimeters") != -1):
-                                    newValue = 0
-                                else:
-                                    newValue = "- data unavailable -"
-                self.updateKeyValueList(device, state, newValue, keyValueList)
-                if state == 'rainTodayInches':
-                    device.refreshFromServer()
-                    try:
-                        rainYesterdayInches = float(device.states['rainYesterdayInches'])
-                    except:
-                        rainYesterdayInches = 0.00
-                    if newValue != "- data unavailable -":
-                        self.updateKeyValueList(device, 'rainTwoDayInches', str(float(newValue) + rainYesterdayInches), keyValueList)
-                    else:
-                        self.logger.debug("    current rain data is not available")
-                        self.updateKeyValueList(device, 'rainTwoDayInches', rainYesterdayInches, keyValueList)
-                elif state == 'rainTodayMillimeters':
-                    device.refreshFromServer()
-                    try:
-                        rainYesterdayMillimeters = int(device.states['rainYesterdayMillimeters'])
-                    except:
-                        rainYesterdayMillimeters = 0
-                    if newValue != "- data unavailable -":
-                        self.updateKeyValueList(device, 'rainTwoDayMillimeters', str(int(float(newValue)) + rainYesterdayMillimeters), keyValueList)
-                    else:
-                        self.logger.debug("    current rain data is not available")
-                        self.updateKeyValueList(device, 'rainTwoDayMillimeters', rainYesterdayMillimeters, keyValueList)
-            if len(keyValueList) > 0:
-                device.updateStatesOnServer(keyValueList)
-        if localPropsUpdated:
-            device.replacePluginPropsOnServer(localPropsCopy)
 
     ########################################
     def diffStatesList(self, oldStates, newStates):
