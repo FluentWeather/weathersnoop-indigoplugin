@@ -21,7 +21,7 @@ except:
     import simplejson as json
 
 import requests
-import urllib
+from urllib import parse
 from xml.dom.minidom import parseString
 from datetime import datetime
 import time
@@ -483,7 +483,7 @@ class Plugin(indigo.PluginBase):
                     props = agentInformation["agent"]["properties"]
                     self.updateWs3KeyValueList(device, agentInformation["agent"], "name", propKey="agent", keyValueList=keyValueList)
                     keyValueList.append(
-                        {'key': "uri", 'value': urllib.parse(localPropsCopy["wsAgent"]).path}
+                        {'key': "uri", 'value': parse.urlparse(localPropsCopy["wsAgent"]).path}
                     )
                 else:
                     # Old WS3 stuff
